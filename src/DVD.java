@@ -13,7 +13,7 @@ public class DVD extends Component {
     private static boolean moveUp = false, moveDown = true, moveRight = true, moveLeft = false;
     private static int x = 0, y = 0;
     private final static int speedX = 4, speedY = 8; // Изменение скорости
-    private static double widthCurrent, heightCurrent; // Текущие ширина, высота окна
+    private static double widthCurrent, heightCurrent, kW = 1, kH = 1; // Текущие ширина, высота окна и коэффициент изменения размера окна
 
     public DVD() {
         paintDVD();
@@ -25,7 +25,11 @@ public class DVD extends Component {
     }
 
     public void paint(Graphics g) {
-        g.drawImage(dvd,x,y,null);
+
+        if(widthCurrent < 500 | heightCurrent < 500) {
+            var g2D = (Graphics2D) g;
+            g2D.drawImage(dvd,x,y, (int)(512/kW), (int)(512/kH), null);
+        }else g.drawImage(dvd,x,y,null);
     }
 
     public static void main(String[] args) {
@@ -37,8 +41,14 @@ public class DVD extends Component {
         f.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
+                System.out.println(f.getSize());
                 heightCurrent = f.getSize().getHeight();
                 widthCurrent = f.getSize().getWidth();
+                if(widthCurrent < 500 | heightCurrent < 500) {
+                    kW = 1000/widthCurrent;
+                    kH = 1000/heightCurrent;
+                }else {kW = 1; kH = 1;}
+
             }
         });
         f.setVisible(true);
@@ -121,28 +131,28 @@ public class DVD extends Component {
 
     public static void changeMove() {
         // Вправо
-        if(y >= heightCurrent - 400 & moveRight & moveDown) { // Если вниз и вправо до низа 600
+        if(y >= heightCurrent - 400/kH & moveRight & moveDown) { // Если вниз и вправо до низа 600
             moveDown = false;
             moveUp = true;
             moveLeft = false;
             color = new Color((int)(Math.random() * 100), (int)(Math.random() * 100), (int)(Math.random() * 10));
             new DVD();
         }
-        if(x >= widthCurrent - 510 & moveRight & moveDown) { // Если вниз и вправо до правого края 490
+        if(x >= widthCurrent - 510/kW & moveRight & moveDown) { // Если вниз и вправо до правого края 490
             moveUp = false;
             moveLeft = true;
             moveRight = false;
             color = new Color((int)(Math.random() * 100), (int)(Math.random() * 100), (int)(Math.random() * 10));
             new DVD();
         }
-        if(x >= widthCurrent - 510 & moveUp & moveRight) { // Если вверх и вправо до правого края 490
+        if(x >= widthCurrent - 510/kW & moveUp & moveRight) { // Если вверх и вправо до правого края 490
             moveLeft = true;
             moveRight = false;
             moveDown = false;
             color = new Color((int)(Math.random() * 100), (int)(Math.random() * 100), (int)(Math.random() * 10));
             new DVD();
         }
-        if(y <= -154 & moveUp & moveRight) { // Если вверх и вправо до верха
+        if(y <= -154/kH & moveUp & moveRight) { // Если вверх и вправо до верха
             moveUp = false;
             moveDown = true;
             moveLeft = false;
@@ -150,28 +160,28 @@ public class DVD extends Component {
             new DVD();
         }
         // Влево
-        if(y >= heightCurrent - 400 & moveDown & moveLeft) { // Если вниз и влево до низа 600
+        if(y >= heightCurrent - 400/kH & moveDown & moveLeft) { // Если вниз и влево до низа 600
             moveRight = false;
             moveUp = true;
             moveDown = false;
             color = new Color((int)(Math.random() * 100), (int)(Math.random() * 100), (int)(Math.random() * 10));
             new DVD();
         }
-        if(x <= -15 & moveDown & moveLeft) { // Если вниз и влево до левого края
+        if(x <= -15/kW & moveDown & moveLeft) { // Если вниз и влево до левого края
             moveRight = true;
             moveUp = false;
             moveLeft = false;
             color = new Color((int)(Math.random() * 100), (int)(Math.random() * 100), (int)(Math.random() * 10));
             new DVD();
         }
-        if(y <= -154 & moveUp & moveLeft) { // Если вверх и влево до верха
+        if(y <= -154/kH & moveUp & moveLeft) { // Если вверх и влево до верха
             moveUp = false;
             moveDown = true;
             moveRight = false;
             color = new Color((int)(Math.random() * 100), (int)(Math.random() * 100), (int)(Math.random() * 10));
             new DVD();
         }
-        if(x <= -15 & moveUp & moveLeft) { // Если вверх и влево до левого края
+        if(x <= -15/kH & moveUp & moveLeft) { // Если вверх и влево до левого края
             moveLeft = false;
             moveDown = false;
             moveRight = true;
