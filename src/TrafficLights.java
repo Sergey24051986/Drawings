@@ -61,7 +61,7 @@ public class TrafficLights extends Canvas
         frame.add(new TrafficLights());
         frame.setSize(800, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
-
 }
